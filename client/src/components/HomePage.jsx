@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
 function HomePage() {
-  const [drinks, setDrinks] = useState([]);
+  const [groupedDrinks, setGroupedDrinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
  
   useEffect(() => {
-    console.log("Fetching data from /api/items...");
-    fetch("/api/items", { headers: { 'Cache-Control': 'no-cache' } })
+    console.log("Fetching data from /api/items-per-category...");
+    fetch("/api/items-per-category", { headers: { 'Cache-Control': 'no-cache' } })
       .then((response) => {
         console.log("Response Status:", response.status);
         if (!response.ok) {
@@ -17,7 +17,30 @@ function HomePage() {
       })
       .then((data) => {
         console.log("Fetched Data:", data);
-        setDrinks(data);
+
+        // Group drinks after fetching, while using effect
+        const grouped = data.reduce((acc, drink) => {
+          // Find the current drink type in the results array we're accumulating to
+          const existingDrinkType = acc.find((drinkType) => drinkType.drinkType === drink.drink_type_name);
+
+          // If the current drink type exists, 
+          // then simply push the new drink to the arr
+          if (existingDrinkType) {
+             existingDrinkType.drink.push(drink.drink_name);
+          } else {
+            // If the current drink type DOESN'T exist,
+            // then push a new object to the results array (accumulator)
+            acc.push({
+              drinkType: drink.drink_type_name,
+              drink: [drink.drink_name]
+            });
+          }
+
+          // Then return this results array (accumulator) after each iteration
+          return acc;
+        }, []); // empty arr means start with an empty arr as the accumulator
+         
+        setGroupedDrinks(grouped); // Update state
         setLoading(false);
       })
       .catch((error) => {
@@ -26,8 +49,7 @@ function HomePage() {
         setLoading(false);
       });
   }, []);
-  
-  
+
   return (
     <>
       <div>
@@ -36,11 +58,16 @@ function HomePage() {
         {error && <div>{error}</div>}      {/* Show error message */}
         {!loading && !error && (
         <div>
-          <h1>Drinks List</h1>
+          <h2>All Drinks</h2>
           <ul>
-            {drinks.map((drink) => (
-              <li key={drink.id}>{drink.name}</li> 
-            ))}
+            {groupedDrinks.map((group, i) => {
+              return (<li key={i}>
+                <h3>{group.drinkType}</h3>
+                <ul>{group.drink.map((drink, i) => (
+                  <li key={i}>{drink}</li>
+                ))}</ul>
+              </li>)
+            })}
           </ul>
         </div>
       )}

@@ -6,6 +6,7 @@ const drinksRouter = Router();
 drinksRouter.get("/", (req, res) => {
   res.send("Hello, World!");
 })
-drinksRouter.get("/api/items", drinksController.fetchDrinks);
+drinksRouter.get("/api/items", drinksController.getDrinks);
+drinksRouter.get("/api/items-per-category", drinksController.getDrinksPerType);
 
 module.exports = drinksRouter;

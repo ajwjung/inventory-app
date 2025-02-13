@@ -33,6 +33,15 @@ const insertMilkSql = `
       ('Soy Milk', 1.00);
 `;
 
+const insertDrinkTypesSql = `
+  INSERT INTO drink_types (name)
+  VALUES 
+    ('Milk Tea'),
+    ('Fruit Tea'),
+    ('Hot Tea'),
+    ('Seasonal Specialties');
+`;
+
 const insertDrinksSql = `
   INSERT INTO drinks (name, drink_type, milk_substitute, price)
   VALUES
@@ -78,15 +87,6 @@ const insertDrinksSql = `
     ('Mango Coconut Smoothie', 4, NULL, 6.00);
 `;
 
-const insertDrinkTypesSql = `
-  INSERT INTO drink_types (name)
-  VALUES 
-    ('Milk Tea'),
-    ('Fruit Tea'),
-    ('Hot Tea'),
-    ('Seasonal Specialties');
-`;
-
 async function main() {
   console.log("Seeding...");
   const client = new Client({
@@ -119,5 +119,19 @@ async function main() {
   await client.end();
   console.log("Done!");
 };
+
+// async function main() {
+//   console.log("Seeding...");
+//   const client = new Client({
+//     connectionString: process.env.CONNECTION_URI,
+//   });
+//   await client.connect();
+//   await client.query(`DROP TABLE IF EXISTS drinks;`);
+//   await client.query(`DROP TABLE IF EXISTS drink_types;`);
+//   await client.query(`DROP TABLE IF EXISTS milk_substitutes;`);
+
+//   await client.end();
+//   console.log("Done!");
+// };
 
 main();
