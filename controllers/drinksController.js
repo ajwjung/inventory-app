@@ -11,7 +11,13 @@ const getDrinksPerType = asyncHandler(async(req, res, next) => {
   res.json(allDrinksPerType);  // Array of objects
 });
 
+const getAllDrinkTypes = asyncHandler(async(req, res, next) => {
+  const allDrinkTypes = await db.getAllDrinkTypes();
+  res.json(allDrinkTypes);
+})
+
 module.exports = {
   getDrinks,
-  getDrinksPerType
+  getDrinksPerType,
+  getAllDrinkTypes
 }

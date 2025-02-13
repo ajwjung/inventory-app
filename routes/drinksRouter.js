@@ -8,5 +8,6 @@ drinksRouter.get("/", (req, res) => {
 })
 drinksRouter.get("/api/items", drinksController.getDrinks);
 drinksRouter.get("/api/items-per-category", drinksController.getDrinksPerType);
+drinksRouter.get("/api/all-categories", drinksController.getAllDrinkTypes)
 
 module.exports = drinksRouter;

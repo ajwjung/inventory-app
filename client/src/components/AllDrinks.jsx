@@ -60,8 +60,8 @@ function AllDrinks() {
           {groupedDrinks.map((group, i) => {
             return (
               <div key={i}>
-                <h5 className="card-title">{group.drinkType}</h5>
-                <div className="row row-cols-3 row-cols-sm-2 row-cols-md-4 g-3">
+                <h2>{group.drinkType}</h2>
+                <div className="row row-cols-3 row-cols-md-4 row-cols-lg-5 g-3">
                   {group.drink.map((drink, i) => (
                     <div className="col"key={i}>
                       <div className="card h-100">

@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './index.css';
 import App from './App.jsx';
 import AllDrinks from './components/AllDrinks.jsx';
-
+import AllDrinksTypes from './components/AllDrinkTypes.jsx';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: "/all-drinks",
     element: <AllDrinks />
+  },
+  {
+    path: "/all-drink-types",
+    element: <AllDrinksTypes />
   }
 ])
 
