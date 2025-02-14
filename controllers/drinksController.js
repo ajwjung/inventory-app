@@ -14,10 +14,16 @@ const getDrinksPerType = asyncHandler(async(req, res, next) => {
 const getAllDrinkTypes = asyncHandler(async(req, res, next) => {
   const allDrinkTypes = await db.getAllDrinkTypes();
   res.json(allDrinkTypes);
-})
+});
+
+const addNewDrinkType = asyncHandler(async(req, res, next) => {
+  const { name } = req.body;  
+  await db.addNewDrinkType(name);
+});
 
 module.exports = {
   getDrinks,
   getDrinksPerType,
-  getAllDrinkTypes
+  getAllDrinkTypes,
+  addNewDrinkType,
 }

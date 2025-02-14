@@ -29,9 +29,19 @@ async function getDrinksPerType() {
   return rows;
 };
 
+async function addNewDrinkType(drinkType) {
+  const SQL = `
+    INSERT INTO drink_types (name)
+    VALUES ($1)
+  `;
+
+  await pool.query(SQL, [drinkType]);
+};
+
 module.exports = {
   getAllDrinkTypes,
   getAllDrinks,
   getAllMilkSubstitutes,
-  getDrinksPerType
+  getDrinksPerType,
+  addNewDrinkType,
 }

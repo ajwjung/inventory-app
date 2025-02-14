@@ -5,6 +5,7 @@ import './index.css';
 import App from './App.jsx';
 import AllDrinks from './components/AllDrinks.jsx';
 import AllDrinksTypes from './components/AllDrinkTypes.jsx';
+import AddCategoryForm from './components/AddCategoryForm.jsx';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/all-drink-types",
     element: <AllDrinksTypes />
+  },
+  {
+    path: "/all-drink-types/new",
+    element: <AddCategoryForm />
   }
 ])
 

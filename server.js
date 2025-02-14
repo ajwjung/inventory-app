@@ -8,8 +8,10 @@ const app = express();
 
 const cors = require('cors');
 app.use(cors({ origin: "*",
-    methods: ["GET", "POST"] })); // Allow requests from any origin (can be more specific if needed)
+  methods: ["GET", "POST"] })
+); // Allow requests from any origin (can be more specific if needed)
 
+app.use(express.json());  // Parse JSON requests (from forms) and put into req.body
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", drinksRouter);
