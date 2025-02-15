@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function AllDrinksTypes() {
   const [drinkTypes, setDrinkTypes] = useState([]);
@@ -37,22 +38,27 @@ function AllDrinksTypes() {
         <div className="container">
           <div className="row row-cols-3 row-cols-md-4 row-cols-lg-5 g-3">
             {drinkTypes.map((drinkType, i) => {
+              // reformat name for URL param (e.g., "Milk Tea" => "milk-tea")
+              const lowercaseName = drinkType.name.replace(/\s+/g, "-").toLowerCase();
+
               return (
                 <div className="col" key={i}>
-                  <div className="card">
-                    <div className="card-title">{drinkType.name}</div>
-                  </div>
+                  <Link to={lowercaseName}>
+                    <div className="card">
+                      <div className="card-title">{drinkType.name}</div>
+                    </div>
+                  </Link>
                 </div>
               )
             })}
           </div>
         </div>
       )}
-      <a href="/all-drink-types/new">
+      <Link to="/all-drink-types/new">
         <button type="button" className="btn btn-primary">
           Add New Category
         </button>
-      </a>
+      </Link>
     </div>
   );
 };
