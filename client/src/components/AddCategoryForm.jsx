@@ -1,9 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import CategoryFormBtn from "./CategoryFormBtn";
 
-function AddCategoryForm() {
+function AddCategoryForm({ editMode }) {
   const [categoryName, setCategoryName] = useState("");
+  const [isEdit, setIsEdit] = useState(editMode);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const { categoryId } = useParams();
+
+  const navigate = useNavigate();
+
+  // If edit mode, then update `categoryName` with existing drink type name
+  useEffect(() => {
+    console.log("Fetching data from /api/all-categories...");
+    fetch("/api/all-categories", { headers: { 'Cache-Control': 'no-cache' } })
+      .then((response) => {
+        if (!response.ok) {
+          // handle error
+          throw new Error("Error: Failed to fetch data");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // successful fetch, get the current category from db
+        const matchingDrinkType = data.find((drinkType) => drinkType.id === parseInt(categoryId));        
+        setCategoryName(matchingDrinkType.name);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setError(error);
+        setLoading(false);
+      }
+    )
+  }, [categoryId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page reload
@@ -12,29 +46,34 @@ function AddCategoryForm() {
 
     try {
       // Fetch and send data with the request to server
-      const response = fetch("/api/all-categories", {
-        method: "POST",
+      const response = await fetch("/api/all-categories", {
+        method: isEdit ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name: categoryName })
+        body: isEdit ? JSON.stringify({ id: categoryId, name: categoryName}) : JSON.stringify({ name: categoryName })
       });
 
       if (!response.ok) {
-        throw new Error("Error: Error fetching from database");
+        const errorData = await response.json();
+        throw new Error(`Error: ${errorData.message || "Error: Error fetching from database"}`);
       };
 
-      setCategoryName("");  // reset value for next time    
+      setCategoryName("");  // reset value for next time
+      navigate(`/all-drink-types/${categoryId}`);
     } catch (error) {
       console.error("Error fetching data: ", error);
+      setError(error.message || "An error occurred, please try again later");
     } finally {
       setLoading(false);
+      setIsEdit(false);
     }
   }
 
   return (
     <>
-      <h1>Add a New Drink Type</h1>
+      <h1>{isEdit ? "Edit Drink Type" : "Add a New Drink Type"}</h1>
+      {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="drink-type">Drink Type: </label>
@@ -43,16 +82,14 @@ function AddCategoryForm() {
             name="drinkType" 
             id="drink-type" 
             value={categoryName} 
-            onChange={(e) => {              
+            onChange={(e) => {
               setCategoryName(e.target.value)
             }}
             required
           />
         </div>
         {error && <p>{error}</p>}
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Creating.." : "Create Category" }
-        </button>
+        <CategoryFormBtn categoryId={categoryId} loading={loading} />
       </form>
       <a href="/all-drink-types">
         <button type="button" className="btn btn-secondary">
@@ -61,6 +98,14 @@ function AddCategoryForm() {
       </a>
     </>
   )
+};
+
+AddCategoryForm.propTypes = {
+  editMode: PropTypes.bool,
 }
+
+AddCategoryForm.defaultProps = {
+  editMode: false,
+};
 
 export default AddCategoryForm;

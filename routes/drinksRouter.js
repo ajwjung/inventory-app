@@ -10,5 +10,6 @@ drinksRouter.get("/api/items", drinksController.getDrinks);
 drinksRouter.get("/api/items-per-category", drinksController.getDrinksPerType);
 drinksRouter.get("/api/all-categories", drinksController.getAllDrinkTypes);
 drinksRouter.post("/api/all-categories", drinksController.addNewDrinkType);
+drinksRouter.put("/api/all-categories", drinksController.editDrinkType);
 
 module.exports = drinksRouter;

@@ -38,10 +38,21 @@ async function addNewDrinkType(drinkType) {
   await pool.query(SQL, [drinkType]);
 };
 
+async function editDrinkType(drinkTypeId, drinkTypeName) {  
+  const SQL = `
+    UPDATE drink_types
+    SET name = $2
+    WHERE id = $1;
+  `;
+
+  await pool.query(SQL, [parseInt(drinkTypeId), drinkTypeName])
+}
+
 module.exports = {
   getAllDrinkTypes,
   getAllDrinks,
   getAllMilkSubstitutes,
   getDrinksPerType,
   addNewDrinkType,
+  editDrinkType,
 }

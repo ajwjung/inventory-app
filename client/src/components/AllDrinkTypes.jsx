@@ -38,12 +38,9 @@ function AllDrinksTypes() {
         <div className="container">
           <div className="row row-cols-3 row-cols-md-4 row-cols-lg-5 g-3">
             {drinkTypes.map((drinkType, i) => {
-              // reformat name for URL param (e.g., "Milk Tea" => "milk-tea")
-              const lowercaseName = drinkType.name.replace(/\s+/g, "-").toLowerCase();
-
               return (
                 <div className="col" key={i}>
-                  <Link to={lowercaseName}>
+                  <Link to={`/all-drink-types/${drinkType.id}`}>
                     <div className="card">
                       <div className="card-title">{drinkType.name}</div>
                     </div>

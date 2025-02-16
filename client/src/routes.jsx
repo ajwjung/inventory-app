@@ -23,8 +23,12 @@ const routes = [
     element: <AddCategoryForm />
   },
   {
-    path: "/all-drink-types/:category",
+    path: "/all-drink-types/:categoryId",
     element: <DrinkType />
+  },
+  {
+    path: "/all-drink-types/:categoryId/edit",
+    element: <AddCategoryForm editMode={true} />
   }
 ];
 
