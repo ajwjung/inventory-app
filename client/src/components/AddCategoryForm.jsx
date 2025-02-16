@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import CategoryFormBtn from "./CategoryFormBtn";
 
@@ -11,8 +10,6 @@ function AddCategoryForm({ editMode }) {
   const [error, setError] = useState(null);
 
   const { categoryId } = useParams();
-
-  const navigate = useNavigate();
 
   // If edit mode, then update `categoryName` with existing drink type name
   useEffect(() => {
@@ -28,7 +25,7 @@ function AddCategoryForm({ editMode }) {
       .then((data) => {
         // successful fetch, get the current category from db
         const matchingDrinkType = data.find((drinkType) => drinkType.id === parseInt(categoryId));        
-        setCategoryName(matchingDrinkType.name);
+        matchingDrinkType ? setCategoryName(matchingDrinkType.name) : setCategoryName(categoryName);
         setLoading(false);
       })
       .catch((error) => {
@@ -37,7 +34,7 @@ function AddCategoryForm({ editMode }) {
         setLoading(false);
       }
     )
-  }, [categoryId]);
+  }, [categoryId, categoryName]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page reload
@@ -60,7 +57,6 @@ function AddCategoryForm({ editMode }) {
       };
 
       setCategoryName("");  // reset value for next time
-      navigate(`/all-drink-types/${categoryId}`);
     } catch (error) {
       console.error("Error fetching data: ", error);
       setError(error.message || "An error occurred, please try again later");

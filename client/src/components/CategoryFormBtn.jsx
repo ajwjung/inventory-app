@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-function CategoryFormBtn(categoryId, loading) {
+function CategoryFormBtn({categoryId, loading}) {
   let buttonText;
 
   if (categoryId && loading) {
