@@ -25,7 +25,7 @@ function AddCategoryForm({ editMode }) {
       .then((data) => {
         // successful fetch, get the current category from db
         const matchingDrinkType = data.find((drinkType) => drinkType.id === parseInt(categoryId));        
-        matchingDrinkType ? setCategoryName(matchingDrinkType.name) : setCategoryName(categoryName);
+        matchingDrinkType ? setCategoryName(matchingDrinkType.name) : setCategoryName("");
         setLoading(false);
       })
       .catch((error) => {
@@ -34,7 +34,7 @@ function AddCategoryForm({ editMode }) {
         setLoading(false);
       }
     )
-  }, [categoryId, categoryName]);
+  }, [categoryId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page reload
