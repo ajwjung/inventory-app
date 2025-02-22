@@ -26,10 +26,16 @@ const editDrinkType = asyncHandler(async(req, res, next) => {
   await db.editDrinkType(id, name);
 });
 
+const deleteDrinkType = asyncHandler(async(req, res, next) => {
+  const { id } = req.body;
+  await db.deleteDrinkType(id);
+});
+
 module.exports = {
   getDrinks,
   getDrinksPerType,
   getAllDrinkTypes,
   addNewDrinkType,
   editDrinkType,
+  deleteDrinkType
 }

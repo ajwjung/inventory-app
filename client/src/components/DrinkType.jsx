@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import ConfirmationModal from "./DeleteModal";
 
 function DrinkType() {
   const { categoryId } = useParams();
@@ -48,7 +49,15 @@ function DrinkType() {
               Edit
             </button>
           </Link>
-          <button type="button" className="btn btn-danger">Delete</button>
+          <button 
+            type="button" 
+            className="btn btn-danger" 
+            data-bs-toggle="modal" 
+            data-bs-target="#delete-category-modal"
+          >
+            Delete
+          </button>
+          <ConfirmationModal currentDrinkType={currentDrinkType} />
         </div>
         <Link to="/all-drink-types">
           <button type="button" className="btn btn-primary">
