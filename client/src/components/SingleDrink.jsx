@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 function SingleDrink() {
   const [drink, setDrink] = useState({});
@@ -47,6 +47,11 @@ function SingleDrink() {
             </p>
             <p>Price: {drink.price}</p>
           </div>
+          <Link to="/all-drinks">
+            <button className="btn btn-primary" type="button">
+              Back to All Drinks
+            </button>
+          </Link>
         </>
       )}
     </>

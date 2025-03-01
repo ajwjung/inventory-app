@@ -15,8 +15,8 @@ const getDrinksPerType = asyncHandler(async(req, res, next) => {
 
 // New controller for getting all drink types per category
 // INCLUDES DUPLICATE DRINK NAMES
-const getDrinksWithTypes = asyncHandler(async(req, res, next) => {
-  const allDrinksWithCategory = await db.getDrinksWithTypes();  
+const getDrinksWithInfo = asyncHandler(async(req, res, next) => {
+  const allDrinksWithCategory = await db.getDrinksWithInfo();  
   res.json(allDrinksWithCategory);  // Array of objects
 });
 
@@ -43,7 +43,7 @@ const deleteDrinkType = asyncHandler(async(req, res, next) => {
 module.exports = {
   getDrinks,
   getDrinksPerType,
-  getDrinksWithTypes,
+  getDrinksWithInfo,
   getAllDrinkTypes,
   addNewDrinkType,
   editDrinkType,
