@@ -14,7 +14,7 @@ function AllDrinks() {
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
-        return response.json();        
+        return response.json(); 
       })
       .then((data) => {
         console.log("Fetched data: ", data);  // Array of all 40 drinks unfiltered
@@ -80,6 +80,7 @@ function AllDrinks() {
       {error && <div>{error}</div>}      {/* Show error message */}
       {!loading && !error && (   
         <div className="container">
+          {console.log(groupedUniqueDrinks)}
           {groupedUniqueDrinks.map((category, i) => {
             return (
               <div className="card-group" key={i}>
@@ -87,18 +88,29 @@ function AllDrinks() {
                 <div className="row row-cols-2 row-cols-md-3 g-4" >
                   {category.drinks.map((drinkGroup, i) => {
                     return (
-                      <Link
-                        to={`/all-drinks/${drinkGroup.drinkVariants[0].id}`} 
-                        key={i}
-                      >
-                        <div className="col">
-                          <div className="card h-100">
-                            <div className="card-body">
-                              <p className="card-text">{drinkGroup.drinkName}</p>
-                            </div>
+                      <div className="col" key={i}>
+                        <div className="card h-100">
+                          <div className="card-body">
+                            <p className="card-text">{drinkGroup.drinkName}</p>
+                          </div>
+                          <div className="card-body">
+                            {drinkGroup.drinkVariants.map((drinkVariant, i) => {
+                              return (
+                                <Link
+                                  className="card-link"
+                                  to={`/all-drinks/${drinkVariant.id}`}
+                                  key={i}
+                                >
+                                  {drinkVariant.milk_substitute === null 
+                                    ? "No Substitute"
+                                    : drinkVariant.milk_substitute
+                                  }
+                                </Link>
+                              )
+                            })}
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     )
                   })}
                 </div>
