@@ -15,6 +15,7 @@ async function getAllMilkSubstitutes() {
   return rows;
 };
 
+// Original query to get drinks per type WITHOUT dupes (render `AllDrinks.jsx`)
 async function getDrinksPerType() {
   const SQL = `
     SELECT drink_types.id,
@@ -28,6 +29,22 @@ async function getDrinksPerType() {
   const { rows } = await pool.query(SQL);
   return rows;
 };
+
+// New query to get all drinks with their type WITH dupes (render `AllDrinks.jsx`)
+async function getDrinksWithTypes() {
+  const SQL = `
+    SELECT drinks.id AS id,
+           drinks.name AS name,
+           COALESCE(drink_types.name, 'No Type') AS drink_type,
+           drinks.milk_substitute AS milk_substitute,
+           drinks.price AS price
+    FROM drinks
+    LEFT JOIN drink_types
+    ON drinks.drink_type = drink_types.id;
+  `;
+  const { rows } = await pool.query(SQL);
+  return rows;
+}
 
 async function addNewDrinkType(drinkType) {
   const SQL = `
@@ -60,6 +77,7 @@ async function deleteDrinkType(drinkTypeId) {
 
 module.exports = {
   getAllDrinkTypes,
+  getDrinksWithTypes,
   getAllDrinks,
   getAllMilkSubstitutes,
   getDrinksPerType,

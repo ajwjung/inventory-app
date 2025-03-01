@@ -1,6 +1,7 @@
 
 import App from './App.jsx';
 import AllDrinks from './components/AllDrinks.jsx';
+import SingleDrink from './components/SingleDrink.jsx';
 import AllDrinksTypes from './components/AllDrinkTypes.jsx';
 import AddCategoryForm from './components/AddCategoryForm.jsx';
 import DrinkType from './components/DrinkType.jsx';
@@ -13,6 +14,10 @@ const routes = [
   {
     path: "/all-drinks",
     element: <AllDrinks />
+  },
+  {
+    path: "/all-drinks/:drinkId",
+    element: <SingleDrink />
   },
   {
     path: "/all-drink-types",

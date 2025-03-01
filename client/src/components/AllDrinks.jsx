@@ -1,46 +1,69 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router";
 
 function AllDrinks() {
-  const [groupedDrinks, setGroupedDrinks] = useState([]);
+  const [groupedUniqueDrinks, setGroupedUniqueDrinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
  
   useEffect(() => {
-    console.log("Fetching data from /api/items-per-category...");
-    fetch("/api/items-per-category", { headers: { 'Cache-Control': 'no-cache' } })
+    console.log("Fetching data from /api/all-items...");
+    fetch("/api/all-items", { headers: { "Cache-Control": "no-cache" } })
       .then((response) => {
-        console.log("Response Status:", response.status);
+        console.log("Response Status: ", response.status);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
-        return response.json();
+        return response.json();        
       })
       .then((data) => {
-        console.log("Fetched Data:", data);
+        console.log("Fetched data: ", data);  // Array of all 40 drinks unfiltered
 
-        // Group drinks after fetching, while using effect
-        const grouped = data.reduce((acc, drink) => {
-          // Find the current drink type in the results array we're accumulating to
-          const existingDrinkType = acc.find((drinkType) => drinkType.drinkType === drink.drink_type_name);
+        // Group the drinks by category, then by drink name
+        const groupedUnique = data.reduce((acc, drink) => {
+          const existingDrinkType = acc.find((drinkType) => {
+            return drinkType.drinkType === drink.drink_type;
+          });
 
-          // If the current drink type exists, 
-          // then simply push the new drink to the arr
+          const drinkName = drink.name;
+          if (!drinkName) {
+            console.warn("Missing drink name for drink: ", drink);
+          };
+          
+          // Arr of categories (obj) > arr of drinks (obj) > arr of each variant (obj)
           if (existingDrinkType) {
-             existingDrinkType.drink.push(drink.drink_name);
-          } else {
-            // If the current drink type DOESN'T exist,
-            // then push a new object to the results array (accumulator)
-            acc.push({
-              drinkType: drink.drink_type_name,
-              drink: [drink.drink_name]
+            const existingDrink = existingDrinkType.drinks.find((drink) => {
+              return drink.drinkName === drinkName;
             });
-          }
 
-          // Then return this results array (accumulator) after each iteration
+            // Push current drink variant to that array
+            if (existingDrink) {
+              existingDrink.drinkVariants.push(drink);
+            } else {
+              // If object doesn't exist, create a new one for it
+              existingDrinkType.drinks.push(
+                {
+                  drinkName: drinkName,
+                  drinkVariants: [drink]
+                }
+              )
+            }
+          } else {
+            acc.push({
+              drinkType: drink.drink_type,
+              drinks: [
+                {
+                  drinkName: drinkName,
+                  drinkVariants: [drink]
+                }
+              ]
+            })
+          };          
+
           return acc;
-        }, []); // empty arr means start with an empty arr as the accumulator
-         
-        setGroupedDrinks(grouped); // Update state
+        }, []);
+
+        setGroupedUniqueDrinks(groupedUnique);
         setLoading(false);
       })
       .catch((error) => {
@@ -49,28 +72,35 @@ function AllDrinks() {
         setLoading(false);
       });
   }, []);
-  
+
   return (
     <div className="container">
-        <h1>All Drinks</h1>
-        {loading && <div>Loading...</div>}  {/* Show loading */}
-        {error && <div>{error}</div>}      {/* Show error message */}
-        {!loading && !error && (
+      <h1>All Drinks</h1>
+      {loading && <div>Loading...</div>}  {/* Show loading */}
+      {error && <div>{error}</div>}      {/* Show error message */}
+      {!loading && !error && (   
         <div className="container">
-          {groupedDrinks.map((group, i) => {
+          {groupedUniqueDrinks.map((category, i) => {
             return (
-              <div key={i}>
-                <h2>{group.drinkType}</h2>
-                <div className="row row-cols-3 row-cols-md-4 row-cols-lg-5 g-3">
-                  {group.drink.map((drink, i) => (
-                    <div className="col"key={i}>
-                      <div className="card h-100">
-                        <div className="card-body">
-                          <p>{drink}</p>
+              <div className="card-group" key={i}>
+                <h2>{category.drinkType}</h2>
+                <div className="row row-cols-2 row-cols-md-3 g-4" >
+                  {category.drinks.map((drinkGroup, i) => {
+                    return (
+                      <Link
+                        to={`/all-drinks/${drinkGroup.drinkVariants[0].id}`} 
+                        key={i}
+                      >
+                        <div className="col">
+                          <div className="card h-100">
+                            <div className="card-body">
+                              <p className="card-text">{drinkGroup.drinkName}</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
+                      </Link>
+                    )
+                  })}
                 </div>
               </div>
             )

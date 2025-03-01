@@ -6,7 +6,12 @@ const drinksRouter = Router();
 drinksRouter.get("/", (req, res) => {
   res.send("Hello, World!");
 })
-drinksRouter.get("/api/items", drinksController.getDrinks);
+// Original controller - not in use yet, I don't think?
+// drinksRouter.get("/api/all-items", drinksController.getDrinks);
+
+// New controller - gets all drinks with their categories (includes same name drinks)
+drinksRouter.get("/api/all-items", drinksController.getDrinksWithTypes);
+// Original controller - groups same name records
 drinksRouter.get("/api/items-per-category", drinksController.getDrinksPerType);
 drinksRouter.get("/api/all-categories", drinksController.getAllDrinkTypes);
 drinksRouter.post("/api/all-categories", drinksController.addNewDrinkType);
