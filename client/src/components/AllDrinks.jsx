@@ -76,6 +76,11 @@ function AllDrinks() {
   return (
     <div className="container">
       <h1>All Drinks</h1>
+      <Link to="/all-drinks/new">
+        <button type="button" className="btn btn-primary">
+          Add New Drink
+        </button>
+      </Link>
       {loading && <div>Loading...</div>}  {/* Show loading */}
       {error && <div>{error}</div>}      {/* Show error message */}
       {!loading && !error && (   

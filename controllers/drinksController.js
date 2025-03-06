@@ -30,6 +30,11 @@ const addNewDrinkType = asyncHandler(async(req, res, next) => {
   await db.addNewDrinkType(name);
 });
 
+const addNewDrink = asyncHandler(async(req, res, next) => {
+  const { drink } = req.body;  
+  await db.addNewDrink(drink);
+})
+
 const editDrinkType = asyncHandler(async(req, res, next) => {
   const { id, name } = req.body;
   await db.editDrinkType(id, name);
@@ -46,6 +51,7 @@ module.exports = {
   getDrinksWithInfo,
   getAllDrinkTypes,
   addNewDrinkType,
+  addNewDrink,
   editDrinkType,
   deleteDrinkType
 }

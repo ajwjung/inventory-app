@@ -13,6 +13,7 @@ drinksRouter.get("/", (req, res) => {
 drinksRouter.get("/api/all-items", drinksController.getDrinksWithInfo);
 // Original controller - groups same name records
 drinksRouter.get("/api/items-per-category", drinksController.getDrinksPerType);
+drinksRouter.post("/api/all-items", drinksController.addNewDrink);
 drinksRouter.get("/api/all-categories", drinksController.getAllDrinkTypes);
 drinksRouter.post("/api/all-categories", drinksController.addNewDrinkType);
 drinksRouter.put("/api/all-categories", drinksController.editDrinkType);
