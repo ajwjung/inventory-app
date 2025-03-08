@@ -80,7 +80,7 @@ async function editDrink(drinkId, drink) {
     drink.milkSubstitute,
     drink.price
   ])
-}
+};
 
 async function deleteDrinkType(drinkTypeId) {
   // Do not allow deletion of first 4 entries (default categories)
@@ -92,6 +92,16 @@ async function deleteDrinkType(drinkTypeId) {
   await pool.query(SQL, [drinkTypeId]);
 };
 
+async function deleteDrink(drinkId) {
+  // Do not allow deletion of first 40 entries (default categories)
+  const SQL = `
+    DELETE FROM drinks
+    WHERE id = $1 AND $1 > 40;
+  `;
+
+  await pool.query(SQL, [drinkId]);
+}
+
 module.exports = {
   getAllDrinkTypes,
   getDrinksWithInfo,
@@ -102,4 +112,5 @@ module.exports = {
   editDrinkType,
   editDrink,
   deleteDrinkType,
+  deleteDrink,
 }

@@ -57,7 +57,10 @@ function DrinkType() {
           >
             Delete
           </button>
-          <ConfirmationModal currentDrinkType={currentDrinkType} />
+          <ConfirmationModal 
+            location="Drink Type" 
+            currentDrinkType={currentDrinkType}
+          />
         </div>
         <Link to="/all-drink-types">
           <button type="button" className="btn btn-primary">
