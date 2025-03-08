@@ -72,7 +72,9 @@ function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h2 className="modal-title" id="modal-label">Delete Category</h2>
+            <h2 className="modal-title" id="modal-label">
+              Delete {location === "Drink Type" ? " Category" : " Drink" }
+            </h2>
             <button 
               type="button" 
               className="btn-close" 
