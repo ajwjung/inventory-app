@@ -68,16 +68,20 @@ function AddDrinkForm({ editMode }) {
       })
       .then((data) => {
         const matchingDrink = data.find((drink) => drink.id === parseInt(drinkId));
-        // Get the category ID so we can select the correct option in our field
-        const drinkTypeId = allDrinkTypes.find((drinkType) => {
-          return drinkType.name === matchingDrink.drink_type
-        });
+        let drinkTypeId;
+
+        if (matchingDrink) {
+          // Get the category ID so we can select the correct option in our field
+          drinkTypeId = allDrinkTypes.find((drinkType) => {
+            return drinkType.name === matchingDrink.drink_type
+          });
+        }
                 
         matchingDrink 
           ? setNewDrink(
             { 
               drinkName: matchingDrink.name, 
-              drinkType: drinkTypeId.id,
+              drinkType: drinkTypeId,
               milkSubstitute: matchingDrink.milk_substitute,
               price: parseFloat(matchingDrink.price).toFixed(2),
             })
@@ -200,7 +204,7 @@ function AddDrinkForm({ editMode }) {
               id="milk-substitute"
               value={newDrink.milkSubstitute === null ? 4 : newDrink.milkSubstitute}
               onChange={(e) => {
-                if (e.target.value === 4) {
+                if (parseInt(e.target.value) === 4) {
                   setNewDrink({
                     ...newDrink, 
                     milkSubstitute: null
@@ -212,9 +216,9 @@ function AddDrinkForm({ editMode }) {
                   });
                 }
               }}
-              disabled={isEdit && parseInt(drinkId) <= 40}
-              required
-            >
+                disabled={isEdit && parseInt(drinkId) <= 40}
+                required
+              >
               {allMilkSubstitutes.map((milkSubstitute) => {
                 return (
                   <option key={milkSubstitute.id} value={milkSubstitute.id}>
