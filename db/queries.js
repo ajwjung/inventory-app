@@ -15,22 +15,7 @@ async function getAllMilkSubstitutes() {
   return rows;
 };
 
-// Original query to get drinks per type WITHOUT dupes (render `AllDrinks.jsx`)
-async function getDrinksPerType() {
-  const SQL = `
-    SELECT drink_types.id,
-           COALESCE(drink_types.name, 'No Type') AS drink_type_name,
-           drinks.name AS drink_name
-    FROM drink_types
-    LEFT JOIN drinks
-    ON drink_types.id = drinks.drink_type
-    GROUP BY drink_types.id, drink_types.name, drinks.name;
-  `;
-  const { rows } = await pool.query(SQL);
-  return rows;
-};
-
-// New query to get all drinks with their type WITH dupes (render `AllDrinks.jsx`)
+// Get all drinks with their type WITH dupes (render `AllDrinks.jsx`)
 async function getDrinksWithInfo() {
   const SQL = `
     SELECT drinks.id AS id,
@@ -69,7 +54,7 @@ async function addNewDrink(newDrink) {
     newDrink.milkSubstitute,
     newDrink.price
   ]);
-}
+};
 
 async function editDrinkType(drinkTypeId, drinkTypeName) {  
   const SQL = `
@@ -80,6 +65,22 @@ async function editDrinkType(drinkTypeId, drinkTypeName) {
 
   await pool.query(SQL, [parseInt(drinkTypeId), drinkTypeName])
 };
+
+async function editDrink(drinkId, drink) {
+  const SQL = `
+    UPDATE drinks
+    SET name = $2, drink_type = $3, milk_substitute = $4, price = $5
+    WHERE id = $1;
+  `;
+
+  await pool.query(SQL, [
+    parseInt(drinkId),
+    drink.drinkName,
+    drink.drinkType,
+    drink.milkSubstitute,
+    drink.price
+  ])
+}
 
 async function deleteDrinkType(drinkTypeId) {
   // Do not allow deletion of first 4 entries (default categories)
@@ -96,9 +97,9 @@ module.exports = {
   getDrinksWithInfo,
   getAllDrinks,
   getAllMilkSubstitutes,
-  getDrinksPerType,
   addNewDrinkType,
   addNewDrink,
   editDrinkType,
+  editDrink,
   deleteDrinkType,
 }

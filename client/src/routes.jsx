@@ -25,6 +25,10 @@ const routes = [
     element: <SingleDrink />
   },
   {
+    path: "/all-drinks/:drinkId/edit",
+    element: <AddDrinkForm editMode={true} />
+  },
+  {
     path: "/all-drink-types",
     element: <AllDrinksTypes />
   },

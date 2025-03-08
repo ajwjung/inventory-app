@@ -17,8 +17,7 @@ function AllDrinks() {
         return response.json(); 
       })
       .then((data) => {
-        console.log("Fetched data: ", data);  // Array of all 40 drinks unfiltered
-
+        // data = array of all 40 drinks unfiltered
         // Group the drinks by category, then by drink name
         const groupedUnique = data.reduce((acc, drink) => {
           const existingDrinkType = acc.find((drinkType) => {
@@ -85,7 +84,6 @@ function AllDrinks() {
       {error && <div>{error}</div>}      {/* Show error message */}
       {!loading && !error && (   
         <div className="container">
-          {console.log(groupedUniqueDrinks)}
           {groupedUniqueDrinks.map((category, i) => {
             return (
               <div className="card-group" key={i}>

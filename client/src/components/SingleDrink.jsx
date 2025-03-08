@@ -20,8 +20,6 @@ function SingleDrink() {
         return response.json();       
       })
       .then((data) => {
-        console.log("Fetched data: ", data);
-
         const match = data.find((drink) => drink.id === parseInt(drinkId));
         setDrink(match);
       })
@@ -46,6 +44,16 @@ function SingleDrink() {
               {drink.milk_substitute === null ? " None" : drink.milk_substitute}
             </p>
             <p>Price: {drink.price}</p>
+          </div>
+          <div className="container">
+            <Link to={`/all-drinks/${drinkId}/edit`}>
+              <button className="btn btn-warning" type="button">
+                Edit Drink
+              </button>
+            </Link>
+            <button className="btn btn-danger"  type="button">
+              Delete Drink
+            </button>
           </div>
           <Link to="/all-drinks">
             <button className="btn btn-primary" type="button">

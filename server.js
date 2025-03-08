@@ -8,7 +8,7 @@ const app = express();
 
 const cors = require('cors');
 app.use(cors({ origin: "*",
-  methods: ["GET", "POST"] })
+  methods: ["GET", "PUT", "POST", "DELETE"] })
 ); // Allow requests from any origin (can be more specific if needed)
 
 app.use(express.json());  // Parse JSON requests (from forms) and put into req.body

@@ -6,15 +6,7 @@ const getDrinks = asyncHandler(async(req, res, next) => {
   res.json(allDrinks);  // Array of objects
 });
 
-// Original controller for getting all drink types per category
-// EXCLUDES DUPLICATE DRINK NAMES
-const getDrinksPerType = asyncHandler(async(req, res, next) => {
-  const allDrinksPerType = await db.getDrinksPerType();  
-  res.json(allDrinksPerType);  // Array of objects
-});
-
-// New controller for getting all drink types per category
-// INCLUDES DUPLICATE DRINK NAMES
+// Get all drink types per category including same-name drinks
 const getDrinksWithInfo = asyncHandler(async(req, res, next) => {
   const allDrinksWithCategory = await db.getDrinksWithInfo();  
   res.json(allDrinksWithCategory);  // Array of objects
@@ -33,11 +25,18 @@ const addNewDrinkType = asyncHandler(async(req, res, next) => {
 const addNewDrink = asyncHandler(async(req, res, next) => {
   const { drink } = req.body;  
   await db.addNewDrink(drink);
-})
+});
 
 const editDrinkType = asyncHandler(async(req, res, next) => {
   const { id, name } = req.body;
   await db.editDrinkType(id, name);
+});
+
+const editDrink = asyncHandler(async(req, res, next) => {
+  const { id, drink } = req.body;
+  console.log(drink);
+  
+  await db.editDrink(id, drink);
 });
 
 const deleteDrinkType = asyncHandler(async(req, res, next) => {
@@ -45,13 +44,19 @@ const deleteDrinkType = asyncHandler(async(req, res, next) => {
   await db.deleteDrinkType(id);
 });
 
+const getAllMilkSubstitutes = asyncHandler(async(req, res, next) => {
+  const allMilkSubstitutes = await db.getAllMilkSubstitutes();
+  res.json(allMilkSubstitutes);
+})
+
 module.exports = {
   getDrinks,
-  getDrinksPerType,
   getDrinksWithInfo,
   getAllDrinkTypes,
   addNewDrinkType,
   addNewDrink,
   editDrinkType,
-  deleteDrinkType
+  editDrink,
+  deleteDrinkType,
+  getAllMilkSubstitutes,
 }
