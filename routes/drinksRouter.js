@@ -10,6 +10,8 @@ drinksRouter.get("/", (req, res) => {
 drinksRouter.get("/api/all-items", drinksController.getDrinksWithInfo);
 drinksRouter.put("/api/all-items", drinksController.editDrink);
 drinksRouter.post("/api/all-items", drinksController.addNewDrink);
+drinksRouter.delete("/api/all-items/:drinkId", drinksController.deleteDrink);
+
 drinksRouter.get("/api/all-categories", drinksController.getAllDrinkTypes);
 drinksRouter.post("/api/all-categories", drinksController.addNewDrinkType);
 drinksRouter.put("/api/all-categories", drinksController.editDrinkType);

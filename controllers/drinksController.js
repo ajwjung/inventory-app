@@ -44,6 +44,11 @@ const deleteDrinkType = asyncHandler(async(req, res, next) => {
   await db.deleteDrinkType(id);
 });
 
+const deleteDrink = asyncHandler(async(req, res, next) => {
+  const { id } = req.body;
+  await db.deleteDrink(id);
+});
+
 const getAllMilkSubstitutes = asyncHandler(async(req, res, next) => {
   const allMilkSubstitutes = await db.getAllMilkSubstitutes();
   res.json(allMilkSubstitutes);
@@ -58,5 +63,6 @@ module.exports = {
   editDrinkType,
   editDrink,
   deleteDrinkType,
+  deleteDrink,
   getAllMilkSubstitutes,
 }
