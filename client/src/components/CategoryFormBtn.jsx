@@ -14,7 +14,7 @@ function CategoryFormBtn({categoryId, loading}) {
   };
 
   return (
-    <button type="submit" className="btn btn-primary" disabled={loading}>
+    <button type="submit" className="btn btn-green-solid my-5" disabled={loading}>
       {buttonText}
     </button>
   )

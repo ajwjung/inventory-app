@@ -17,6 +17,11 @@
     "express-async-handler": "^1.2.0",
     "express-validator": "^7.2.1",
     "pg": "^8.13.1",
-    "prop-types": "^15.8.1"
+    "prop-types": "^15.8.1",
+    "sass": "^1.85.1"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.3"
   }
 }

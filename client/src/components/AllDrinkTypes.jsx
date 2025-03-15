@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
 
 function AllDrinksTypes() {
   const [drinkTypes, setDrinkTypes] = useState([]);
@@ -30,32 +32,38 @@ function AllDrinksTypes() {
   }, []);
   
   return (
-    <div className="container">
-      <h1>Drink Types</h1>
-      {loading && <div>Loading...</div>}  {/* Show loading */}
-      {error && <div>{error}</div>}      {/* Show error message */}
-      {!loading && !error && (
-        <div className="container">
-          <div className="row row-cols-3 row-cols-md-4 row-cols-lg-5 g-3">
-            {drinkTypes.map((drinkType, i) => {
-              return (
-                <div className="col" key={i}>
-                  <Link to={`/all-drink-types/${drinkType.id}`}>
-                    <div className="card">
-                      <div className="card-title">{drinkType.name}</div>
-                    </div>
-                  </Link>
-                </div>
-              )
-            })}
-          </div>
+    <div className="d-flex flex-column" style={{height: "100vh"}}>
+      <NavBar />
+      <div className="container flex-grow-1">
+        <h1 className="py-4">Drink Types</h1>
+        <div className="row">
+          <Link to="/all-drink-types/new" className="col">
+            <button type="button" className="btn btn-green">
+              + New Category
+            </button>
+          </Link>
         </div>
-      )}
-      <Link to="/all-drink-types/new">
-        <button type="button" className="btn btn-primary">
-          Add New Category
-        </button>
-      </Link>
+        {loading && <div>Loading...</div>}  {/* Show loading */}
+        {error && <div>{error}</div>}      {/* Show error message */}
+        {!loading && !error && (
+          <div className="container my-5">
+            <div className="row row-cols-3 row-cols-md-4 row-cols-lg-5 g-3">
+              {drinkTypes.map((drinkType, i) => {
+                return (
+                  <div className="col" key={i}>
+                    <Link to={`/all-drink-types/${drinkType.id}`}>
+                      <div className="card">
+                        <h5 className="card-title text-wrap text-center">{drinkType.name}</h5>
+                      </div>
+                    </Link>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </div> 
+      <Footer />
     </div>
   );
 };

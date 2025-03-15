@@ -1,42 +1,137 @@
+:root {
+  --cream: rgb(252, 243, 232);
+  --milk-tea: rgb(245, 237, 221);
+  --pistachio: rgb(240, 242, 188);
+  --green-tea: rgb(131, 155, 104);
+  --green-tea-lite: rgb(156, 175, 139);
+  --matcha: rgb(99, 115, 70);
+  --latte: rgb(181, 160, 137);
+  --coffee: rgb(133, 87, 56);
+  --bean: rgb(95, 65, 38);
+
+  --cream-hover: rgba(252, 250, 248, 0.5);
+  --green-tea-hover: rgba(198, 211, 181, 0.5);
+}
+
+* {
+  color: var(--matcha);
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  background: var(--cream);
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Styles navbar */
+nav,
+footer {
+  background: var(--matcha);
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: var(--pistachio);
+  font-weight: 600;
+}
+
+.nav-link,
+footer {
+  color: var(--cream);
+}
+
+/* Styles main root container */
 #root {
+  height: 100%;
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
+/* Styles all cards */
 .card {
   padding: 2em;
+  border: 1px solid var(--latte);
+  border-radius: 7px;
+  background: var(--cream-hover);
+  min-height: 150px;
 }
 
-.read-the-docs {
-  color: #888;
+.card:hover {
+  border: 1px solid var(--green-tea);
+  background: var(--green-tea-hover);
+}
+
+.card-title {
+  color: var(--matcha);
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 0.7rem;
+}
+
+.card-link {
+  color: var(--matcha);
+}
+
+.card-link:hover {
+  font-style: italic;
+}
+
+/* Styles buttons to green or brown */
+.btn-green {
+  border: 1px solid var(--green-tea);
+  color: rgb(77, 90, 53);
+}
+
+.btn-green:hover {
+  background: var(--matcha);
+}
+
+.btn-green:hover,
+.btn-green-solid,
+.btn-green-solid:hover,
+.btn-brown,
+.btn-brown:hover {
+  color: white;
+}
+
+.btn-green-solid {
+  background: var(--green-tea);
+}
+
+.btn-green-solid:hover {
+  background: var(--matcha);
+}
+
+.btn-brown {
+  background: var(--coffee);
+}
+
+.btn-brown:hover {
+  background: var(--bean);
+}
+
+.disabled {
+  cursor: not-allowed;
+}
+
+/* Styles Drink cards' list items */
+.list-group {
+  --bs-list-group-border-color: var(--milk-tea);
+}
+
+.list-group-item {
+  background: none;
+  padding: 3px 5px;
+}
+
+.list-group-item:hover {
+  background: rgba(252, 250, 248, 0.5);
 }

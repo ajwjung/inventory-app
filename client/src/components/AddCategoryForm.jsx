@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import CategoryFormBtn from "./CategoryFormBtn";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
 
 function AddCategoryForm({ editMode }) {
   const [categoryName, setCategoryName] = useState("");
@@ -67,32 +69,47 @@ function AddCategoryForm({ editMode }) {
   }
 
   return (
-    <>
-      <h1>{isEdit ? "Edit Drink Type" : "Add a New Drink Type"}</h1>
-      {error && <div className="error">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="drink-type">Drink Type: </label>
-          <input 
-            type="text" 
-            name="drinkType" 
-            id="drink-type" 
-            value={categoryName} 
-            onChange={(e) => {
-              setCategoryName(e.target.value)
-            }}
-            required
-          />
+    <div className="d-flex flex-column" style={{height: "100vh"}}>
+      <NavBar />
+      <div className="container flex-grow-1 py-3">
+        <h1 className="m-4">
+          {isEdit ? "Edit Drink Type" : "Add a New Drink Type"}
+        </h1>
+        {error && <div className="error">{error}</div>}
+        <div className="d-flex flex-column" style={{height: "70%"}}>
+          <form onSubmit={handleSubmit} className="m-5">
+            <div className="row mb-3">
+              <label className="col-form-label col-sm-4" htmlFor="drink-type">
+                Drink Type:
+              </label>
+              <div className="col-sm-8">
+                <input
+                  className="form-control"
+                  type="text"
+                  name="drinkType"
+                  id="drink-type"
+                  value={categoryName}
+                  onChange={(e) => {
+                    setCategoryName(e.target.value)
+                  }}
+                  required
+                />
+              </div>
+            </div>
+            {error && <p>{error}</p>}
+            <CategoryFormBtn categoryId={categoryId} loading={loading} />
+          </form>
         </div>
-        {error && <p>{error}</p>}
-        <CategoryFormBtn categoryId={categoryId} loading={loading} />
-      </form>
-      <a href="/all-drink-types">
-        <button type="button" className="btn btn-secondary">
-          Back to All Categories
-        </button>
-      </a>
-    </>
+        <div className="mt-auto">
+          <Link to="/all-drink-types">
+            <button type="button" className="btn btn-green">
+              Back to All Categories
+            </button>
+          </Link>
+        </div>
+      </div>
+      <Footer />
+    </div>
   )
 };
 

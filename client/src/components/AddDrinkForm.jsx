@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
+import * as bootstrap from "bootstrap";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function AddDrinkForm({ editMode }) {
   // Fetch and send data with the request to server
@@ -100,6 +104,21 @@ function AddDrinkForm({ editMode }) {
       });
   }, [drinkId, allDrinkTypes, allMilkSubstitutes]);
 
+  useEffect(() => {
+    const selectElement = document.getElementById('milk-substitute');
+    
+    if (parseInt(drinkId) <= 40 && isEdit) {
+      // Manually initialize popover on the select input
+      const popover = new bootstrap.Popover(selectElement);
+      popover.enable();  // Make sure the popover is enabled
+  
+      return () => {
+        popover.dispose();  // Clean up when component is unmounted
+      };
+    }
+  }, [drinkId, isEdit]);
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page refresh
     setLoading(true);
@@ -143,118 +162,165 @@ function AddDrinkForm({ editMode }) {
     }
   };
 
+  useEffect(() => {
+    // Enable popover on button
+    const selectElement = document.getElementById('milk-substitute');
+
+    if (parseInt(drinkId) <= 40 && isEdit) {
+      new bootstrap.Popover(selectElement);
+    };
+
+    return () => {
+      if (selectElement) {
+        const popoverInstance = bootstrap.Popover.getInstance(selectElement);
+        if (popoverInstance) popoverInstance.dispose(); // Cleanup on unmount
+      }
+    };
+  }, [drinkId, isEdit]);
+
   return (
-    <>
+    <div className="d-flex flex-column" style={{height: "100vh"}}>
       {loading && <div>Loading...</div>}
       {error && <div className="error">{error}</div>}
-      <>
-        <h1>{isEdit ? "Edit Drink" : "Add a New Drink"}</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="drink-name" className="form-label">Drink Name:</label>
-            <input 
-              type="text" 
-              name="drinkName" 
-              id="drink-name" 
-              value={newDrink.drinkName}
-              onChange={(e) => {                  
-                setNewDrink({
-                  ...newDrink, 
-                  drinkName: e.target.value
-                });
-              }}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="drink-type" className="form-label">Drink Type:</label>
-            <select 
-              className="form-select" 
-              type="text" 
-              name="drinkType" 
-              id="drink-type"
-              value={newDrink.drinkType}
-              onChange={(e) => {
-                setNewDrink({
-                  ...newDrink, 
-                  drinkType: parseInt(e.target.value) // integer ID
-                })}
-              }
-              required
-            >
-              {allDrinkTypes.map((drinkType) => {
-                return (
-                  <option key={drinkType.id} value={drinkType.id}>
-                    {drinkType.name}
-                  </option>
-                )
-              })}
-            </select>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="milk-substitute" className="form-label">Milk Substitute:</label>
-            {/*
-              IN EDIT MODE, DISABLE SELECTION IF ID <= 40
-              Original dummy data will be immutable due to how records are stored 
-            */}
-            <select 
-              className="form-select" 
-              type="text" 
-              name="milkSubstitute"
-              id="milk-substitute"
-              value={newDrink.milkSubstitute === null ? 4 : newDrink.milkSubstitute}
-              onChange={(e) => {
-                if (parseInt(e.target.value) === 4) {
-                  setNewDrink({
-                    ...newDrink, 
-                    milkSubstitute: null
-                  });
-                } else {
-                  setNewDrink({
-                    ...newDrink,
-                    milkSubstitute: parseInt(e.target.value)
-                  });
-                }
-              }}
-                disabled={isEdit && parseInt(drinkId) <= 40}
-                required
+      <NavBar />
+      <div className="container flex-grow-1 py-3">
+        <h1 className="m-4">{isEdit ? "Edit Drink" : "Add a New Drink"}</h1>
+        <div className="d-flex flex-column" style={{height: "70%"}}>
+          <form onSubmit={handleSubmit} className="m-5">
+            <div className="mb-3 row">
+              <label 
+                htmlFor="drink-name" 
+                className="col-sm-4 col-form-label text-start"
               >
-              {allMilkSubstitutes.map((milkSubstitute) => {
-                return (
-                  <option key={milkSubstitute.id} value={milkSubstitute.id}>
-                    {milkSubstitute.alternative}
-                  </option>
-                )
-              })}
-              <option value={4}>No Substitute</option>
-            </select>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="drinkPrice" className="form-label">Price: $</label>
-            <input 
-              type="number" 
-              name="price" 
-              id="drinkPrice" 
-              min="0.01" 
-              step="0.01" 
-              value={newDrink.price} 
-              onChange={(e) => {
-                setNewDrink({...newDrink, price: parseFloat(e.target.value)});
-              }}
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">
-            {isEdit ? "Save Drink" : "Add Drink"}
-          </button>
-        </form>
-        <a href="/all-drinks">
-          <button type="button" className="btn btn-secondary">
-            Back to All Drinks
-          </button>
-        </a>
-      </>
-    </>
+                Drink Name:
+              </label>
+              <div className="col-sm-8">
+                <input
+                  className="form-control"
+                  type="text"
+                  name="drinkName"
+                  id="drink-name"
+                  value={newDrink.drinkName}
+                  onChange={(e) => {
+                    setNewDrink({
+                      ...newDrink,
+                      drinkName: e.target.value
+                    });
+                  }}
+                  required
+                />
+              </div>
+            </div>
+            <div className="mb-3 row">
+              <label htmlFor="drink-type" className="col-sm-4 col-form-label text-start">Drink Type:</label>
+              <div className="col-sm-8">
+                <select
+                  className="form-select"
+                  type="text"
+                  name="drinkType"
+                  id="drink-type"
+                  value={newDrink.drinkType}
+                  onChange={(e) => {
+                    setNewDrink({
+                      ...newDrink,
+                      drinkType: parseInt(e.target.value) // integer ID
+                    })}
+                  }
+                  required
+                >
+                  {allDrinkTypes.map((drinkType) => {
+                    return (
+                      <option key={drinkType.id} value={drinkType.id}>
+                        {drinkType.name}
+                      </option>
+                    )
+                  })}
+                </select>
+              </div>
+            </div>
+            <div className="mb-3 row">
+              <label 
+                htmlFor="milk-substitute" 
+                className="col-sm-4 col-form-label text-start"
+              >
+                Milk Substitute:
+              </label>
+              {/*
+                IN EDIT MODE, DISABLE SELECTION IF ID <= 40
+                Original dummy data will be immutable due to how records are stored
+              */}
+              <div className="col-sm-8">
+                <select
+                  className="form-select"
+                  type="text"
+                  name="milkSubstitute"
+                  id="milk-substitute"
+                  value={newDrink.milkSubstitute === null ? 4 : newDrink.milkSubstitute}
+                  onChange={(e) => {
+                    if (parseInt(e.target.value) === 4) {
+                      setNewDrink({
+                        ...newDrink,
+                        milkSubstitute: null
+                      });
+                    } else {
+                      setNewDrink({
+                        ...newDrink,
+                        milkSubstitute: parseInt(e.target.value)
+                      });
+                    }
+                  }}
+                    disabled={isEdit && parseInt(drinkId) <= 40}
+                    required
+                    data-bs-toggle={parseInt(drinkId) <= 40 && isEdit ? 'popover' : undefined}
+                    title="Popover Title"
+                    data-bs-content="Milk substitute cannot be changed for this drink."
+                  >
+                  {allMilkSubstitutes.map((milkSubstitute) => {
+                    return (
+                      <option key={milkSubstitute.id} value={milkSubstitute.id}>
+                        {milkSubstitute.alternative}
+                      </option>
+                    )
+                  })}
+                  <option value={4}>No Substitute</option>
+                </select>
+              </div>
+            </div>
+            <div className="mb-3 row">
+              <label htmlFor="drinkPrice" className="col-sm-4 col-form-label text-start">
+                Price: $
+              </label>
+              <div className="col-sm-8">
+                <input
+                  className="form-control"
+                  type="number"
+                  name="price"
+                  id="drinkPrice"
+                  min="0.01"
+                  step="0.01"
+                  value={newDrink.price}
+                  onChange={(e) => {
+                    setNewDrink({...newDrink, price: parseFloat(e.target.value)});
+                  }}
+                  required
+                />
+              </div>
+            </div>
+            <button type="submit" className="btn btn-green-solid">
+              {isEdit ? "Save Drink" : "Add Drink"}
+            </button>
+          </form>
+        </div>
+        <div className="mt-auto">
+          <Link to="/all-drinks">
+            <button type="button" className="btn btn-green m-3">
+              Back to All Drinks
+            </button>
+          </Link>
+        </div>
+      </div>
+      <Footer />
+    </div>
   );
 };
 
