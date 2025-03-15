@@ -137,7 +137,7 @@ function SingleDrink() {
                     className="btn btn-brown m-2"
                     type="button"
                     data-bs-toggle="modal"
-                    data-bs-target="#delete-category-modal"
+                    data-bs-target="#delete-modal"
                   >
                     Delete Drink
                   </button>

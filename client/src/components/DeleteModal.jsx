@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+// import * as bootstrap from "bootstrap";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
   const [loading, setLoading] = useState(false);
@@ -49,6 +51,8 @@ function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
       setError(error);
     } finally {
       setLoading(false);
+
+      // Redirection currently not working
       if (location === "Drink Type") {
         navigate("/all-drink-types");
       } else if (location === "Drink") {
@@ -61,53 +65,56 @@ function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
     <>
       {loading && <div className="loading">Loading...</div>}
       {error && <div className="error">{error}</div>}
-      <div 
-        className="modal fade"
-        id="delete-category-modal" 
-        data-bs-backdrop="static" 
-        data-bs-keyboard="false"
-        tabIndex="-1"
-        aria-labelledby="modal-label"
-      >
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h2 className="modal-title" id="modal-label">
-              Delete {location === "Drink Type" ? " Category" : " Drink" }
-            </h2>
-            <button 
-              type="button" 
-              className="btn-close" 
-              aria-label="Close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div className="modal-body">
-            <p>Are you sure you want to delete the following 
-              {location === "Drink Type" ? " category" : " item"}?</p>
-            <p>{location === "Drink Type" 
-              ? currentDrinkType.name 
-              : currentDrink.name }</p>
-          </div>
-          <div className="modal-footer">
-            <button 
-              type="button" 
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button 
-              type="button" 
-              className="btn btn-danger"
-              onClick={handleDelete}
-            >
-              Delete
-            </button>
+      {!loading && !error && (
+        <div 
+          className="modal fade"
+          id="delete-modal" 
+          data-bs-backdrop="static" 
+          data-bs-keyboard="false"
+          tabIndex="-1"
+          aria-labelledby="modal-label"
+        >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2 className="modal-title" id="modal-label">
+                Delete {location === "Drink Type" ? " Category" : " Drink" }
+              </h2>
+              <button 
+                type="button" 
+                className="btn-close" 
+                aria-label="Close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <p>Are you sure you want to delete the following 
+                {location === "Drink Type" ? " category" : " item"}?</p>
+              <p>{location === "Drink Type" 
+                ? currentDrinkType.name 
+                : currentDrink.name }</p>
+            </div>
+            <div className="modal-footer">
+              <button 
+                type="button" 
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button 
+                type="button" 
+                className="btn btn-danger"
+                data-bs-dismiss="modal"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    )}
   </>
   )
 };

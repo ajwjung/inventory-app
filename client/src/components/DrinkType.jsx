@@ -94,7 +94,7 @@ function DrinkType() {
                       type="button"
                       className="btn btn-brown m-2"
                       data-bs-toggle="modal"
-                      data-bs-target="#delete-category-modal"
+                      data-bs-target="#delete-modal"
                       disabled={categoryId <= 4}
                     >
                       Delete Category

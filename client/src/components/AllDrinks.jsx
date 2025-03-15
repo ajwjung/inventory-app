@@ -116,7 +116,7 @@ function AllDrinks() {
                     {category.drinks.map((drinkGroup, i) => {
                       return (
                         <div className="col" key={i}>
-                          <div className="card h-100 p-3">
+                          <div className="card h-100">
                             <div className="card-body">
                               <h5 className="card-title">{drinkGroup.drinkName}</h5>
                             </div>
