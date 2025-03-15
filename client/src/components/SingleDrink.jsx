@@ -46,8 +46,6 @@ function SingleDrink() {
     })
     .then((data) => {
       const match = data.find((drink) => drink.id === parseInt(drinkId));
-      console.log(match);
-      
 
       if (match.milk_substitute === null) {
         setDrink({

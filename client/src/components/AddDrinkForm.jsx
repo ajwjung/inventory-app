@@ -47,7 +47,7 @@ function AddDrinkForm({ editMode }) {
         }
         return response.json();
       })
-      .then((data) => {
+      .then((data) => {        
         setAllMilkSubstitutes(data);
       })
       .catch((error) => {
@@ -76,11 +76,12 @@ function AddDrinkForm({ editMode }) {
 
         if (matchingDrink) {
           // Get the category ID so we can select the correct option in our field
-          drinkTypeId = allDrinkTypes.find((drinkType) => {
+          const matchingDrinkType = allDrinkTypes.find((drinkType) => {
             return drinkType.name === matchingDrink.drink_type
           });
-        }
-                
+          drinkTypeId = matchingDrinkType.id;
+        };
+
         matchingDrink 
           ? setNewDrink(
             { 
@@ -180,11 +181,11 @@ function AddDrinkForm({ editMode }) {
 
   return (
     <div className="d-flex flex-column" style={{height: "100vh"}}>
-      {loading && <div>Loading...</div>}
-      {error && <div className="error">{error}</div>}
       <NavBar />
       <div className="container flex-grow-1 py-3">
         <h1 className="m-4">{isEdit ? "Edit Drink" : "Add a New Drink"}</h1>
+        {loading && <div>Loading...</div>}
+        {error && <div className="error">{error}</div>}
         <div className="d-flex flex-column" style={{height: "70%"}}>
           <form onSubmit={handleSubmit} className="m-5">
             <div className="mb-3 row">
@@ -212,7 +213,12 @@ function AddDrinkForm({ editMode }) {
               </div>
             </div>
             <div className="mb-3 row">
-              <label htmlFor="drink-type" className="col-sm-4 col-form-label text-start">Drink Type:</label>
+              <label 
+                htmlFor="drink-type" 
+                className="col-sm-4 col-form-label text-start"
+              >
+                Drink Type:
+              </label>
               <div className="col-sm-8">
                 <select
                   className="form-select"
