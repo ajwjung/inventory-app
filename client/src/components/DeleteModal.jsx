@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-// import * as bootstrap from "bootstrap";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
@@ -10,6 +9,31 @@ function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
   const { categoryId } = useParams();
   const { drinkId } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Listen for modal closing event and redirect user to target page
+    const modalElement = document.getElementById("delete-modal");
+    
+    const handleModalHidden = () => {
+      if (location === "Drink Type") {
+        navigate("/all-drink-types");
+      } else if (location === "Drink") {
+        navigate("/all-drinks");
+      }
+    };
+
+    if (modalElement) {
+      modalElement.addEventListener("hidden.bs.modal", handleModalHidden);
+    }
+
+    // Cleanup event listener when the component unmounts
+    return () => {
+      if (modalElement) {
+        modalElement.removeEventListener("hidden.bs.modal", handleModalHidden);
+      }
+    };
+  }, [navigate, location]);
+
 
   const handleDelete = async () => {
     setLoading(true);
@@ -51,13 +75,6 @@ function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
       setError(error);
     } finally {
       setLoading(false);
-
-      // Redirection currently not working
-      if (location === "Drink Type") {
-        navigate("/all-drink-types");
-      } else if (location === "Drink") {
-        navigate("/all-drinks");
-      }
     }
   };
 
