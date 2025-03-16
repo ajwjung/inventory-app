@@ -25,6 +25,11 @@ body {
 
 a {
   text-decoration: none;
+  color: var(--cream);
+}
+
+a:hover {
+  font-style: italic;
 }
 
 /* Styles navbar */
@@ -78,10 +83,6 @@ footer {
 
 .card-link {
   color: var(--matcha);
-}
-
-.card-link:hover {
-  font-style: italic;
 }
 
 /* Styles buttons to green or brown */
