@@ -10,7 +10,6 @@ function AddCategoryForm({ editMode }) {
   const [isEdit, setIsEdit] = useState(editMode);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const { categoryId } = useParams();
 
   // If edit mode, then update `categoryName` with existing drink type name
@@ -19,13 +18,12 @@ function AddCategoryForm({ editMode }) {
     fetch("/api/all-categories", { headers: { 'Cache-Control': 'no-cache' } })
       .then((response) => {
         if (!response.ok) {
-          // handle error
           throw new Error("Error: Failed to fetch data");
         }
         return response.json();
       })
       .then((data) => {
-        // successful fetch, get the current category from db
+        // Successful fetch, get the current category from db
         const matchingDrinkType = data.find((drinkType) => drinkType.id === parseInt(categoryId));        
         matchingDrinkType ? setCategoryName(matchingDrinkType.name) : setCategoryName("");
         setLoading(false);
@@ -50,12 +48,16 @@ function AddCategoryForm({ editMode }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: isEdit ? JSON.stringify({ id: categoryId, name: categoryName}) : JSON.stringify({ name: categoryName })
+        body: isEdit 
+          ? JSON.stringify({ id: categoryId, name: categoryName}) 
+          : JSON.stringify({ name: categoryName })
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(`Error: ${errorData.message || "Error: Error fetching from database"}`);
+        throw new Error(
+          `Error: ${errorData.message || "Error: Error fetching from database"}`
+        );
       };
 
       setCategoryName("");  // reset value for next time

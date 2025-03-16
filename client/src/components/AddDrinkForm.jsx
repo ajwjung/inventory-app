@@ -111,7 +111,7 @@ function AddDrinkForm({ editMode }) {
     if (parseInt(drinkId) <= 40 && isEdit) {
       // Manually initialize popover on the select input
       const popover = new bootstrap.Popover(selectElement);
-      popover.enable();  // Make sure the popover is enabled
+      popover.enable();
   
       return () => {
         popover.dispose();  // Clean up when component is unmounted
@@ -251,10 +251,6 @@ function AddDrinkForm({ editMode }) {
               >
                 Milk Substitute:
               </label>
-              {/*
-                IN EDIT MODE, DISABLE SELECTION IF ID <= 40
-                Original dummy data will be immutable due to how records are stored
-              */}
               <div className="col-sm-8">
                 <select
                   className="form-select"

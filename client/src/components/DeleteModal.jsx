@@ -34,15 +34,12 @@ function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
     };
   }, [navigate, location]);
 
-
   const handleDelete = async () => {
     setLoading(true);
     setError(null);
 
     try {
       if (location === "Drink Type") {
-        // Fetch for `/api/all-categories/:categoryId` to delete category
-        // or `/api/all-items/:drinkId` to delete item
         const response = await fetch(`/api/all-categories/${categoryId}`, {
           method: "DELETE",
           headers: { 
@@ -53,10 +50,11 @@ function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(`Error: ${errorData} || Error: Error fetching from database `);
+          throw new Error(
+            `Error: ${errorData} || Error: Error fetching from database`
+          );
         }
       } else if (location === "Drink") {
-        // Fetch for `/api/all-items/:drinkId` to delete item
         const response = await fetch(`/api/all-items/${drinkId}`, {
           method: "DELETE",
           headers: { 
@@ -67,7 +65,9 @@ function ConfirmationModal({ location, currentDrinkType, currentDrink }) {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(`Error: ${errorData} || Error: Error fetching from database `);
+          throw new Error(
+            `Error: ${errorData} || Error: Error fetching from database`
+          );
         }
       }
     } catch (error) {

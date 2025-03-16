@@ -13,13 +13,11 @@ function AllDrinksTypes() {
     fetch("/api/all-categories", { headers: { 'Cache-Control': 'no-cache' } })
       .then((response) => {
         if (!response.ok) {
-          // handle error
           throw new Error("Error: Failed to fetch data");
         }
         return response.json();
       })
       .then((data) => {
-        // successful fetch
         setDrinkTypes(data);
         setLoading(false);
       })
@@ -43,8 +41,8 @@ function AllDrinksTypes() {
             </button>
           </Link>
         </div>
-        {loading && <div>Loading...</div>}  {/* Show loading */}
-        {error && <div>{error}</div>}      {/* Show error message */}
+        {loading && <div>Loading...</div>}
+        {error && <div>{error}</div>}
         {!loading && !error && (
           <div className="container my-5">
             <div className="row row-cols-3 row-cols-md-4 row-cols-lg-5 g-3">

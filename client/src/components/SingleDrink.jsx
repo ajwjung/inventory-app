@@ -112,6 +112,8 @@ function SingleDrink() {
                   Edit Drink
                 </button>
               </Link>
+              {/* Default drinks are meant to be immutable
+                  Render a disabled button for default drinks */}
               {(parseInt(drinkId) <= 40) && (
                 <span 
                   className="d-inline-block disabled" 

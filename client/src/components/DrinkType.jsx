@@ -11,7 +11,6 @@ function DrinkType() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
-  // fetch for corresponding drink type and get details
   useEffect(() => {
     fetch("/api/all-categories", {
       method: "GET",
@@ -27,9 +26,9 @@ function DrinkType() {
       return response.json();
     })
     .then((data) => {
+      // Get a specific drink type's info
       const match = data.find((drinkType => drinkType.id === parseInt(categoryId)));
       setCurrentDrinkType(match);
-
     })
     .catch((error) => {
       console.error("Error fetching data: ", error);
@@ -69,6 +68,8 @@ function DrinkType() {
                     Edit Category
                   </button>
                 </Link>
+                {/* Default drink types are meant to be immutable
+                    Render a disabled button for default drink types */}
                 {(parseInt(categoryId) <= 4) && (
                   <span
                     className="d-inline-block disabled"

@@ -39,7 +39,6 @@ function AllDrinks() {
         return response.json(); 
       })
       .then((data) => {
-        // data = array of all 40 drinks unfiltered
         // Group the drinks by category, then by drink name
         const groupedUnique = data.reduce((acc, drink) => {
           const existingDrinkType = acc.find((drinkType) => {
@@ -51,17 +50,16 @@ function AllDrinks() {
             console.warn("Missing drink name for drink: ", drink);
           };
           
-          // Arr of categories (obj) > arr of drinks (obj) > arr of each variant (obj)
+          /* Add drinks to their respective drink types
+             With same-name drinks being grouped together */
           if (existingDrinkType) {
             const existingDrink = existingDrinkType.drinks.find((drink) => {
               return drink.drinkName === drinkName;
             });
 
-            // Push current drink variant to that array
             if (existingDrink) {
               existingDrink.drinkVariants.push(drink);
             } else {
-              // If object doesn't exist, create a new one for it
               existingDrinkType.drinks.push(
                 {
                   drinkName: drinkName,
@@ -104,8 +102,8 @@ function AllDrinks() {
             + New Drink
           </button>
         </Link>
-        {loading && <div>Loading...</div>}  {/* Show loading */}
-        {error && <div>{error}</div>}      {/* Show error message */}
+        {loading && <div>Loading...</div>}
+        {error && <div>{error}</div>}
         {!loading && !error && (   
           <div className="container h-100 w-100 pb-4">
             {groupedUniqueDrinks.map((category, i) => {
