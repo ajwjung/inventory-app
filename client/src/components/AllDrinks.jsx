@@ -109,7 +109,13 @@ function AllDrinks() {
             {groupedUniqueDrinks.map((category, i) => {
               return (
                 <div className="card-group" key={i}>
-                  <h2 className="my-4 text-uppercase">{category.drinkType}</h2>
+                  <h2 className="my-4 text-uppercase">
+                    {
+                      category.drinkType === "No Type" 
+                      ? "Uncategorized" 
+                      : category.drinkType
+                    }
+                  </h2>
                   <div className="row row-cols-2 row-cols-md-3 g-4" >
                     {category.drinks.map((drinkGroup, i) => {
                       return (

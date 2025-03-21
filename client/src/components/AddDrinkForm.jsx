@@ -71,7 +71,7 @@ function AddDrinkForm({ editMode }) {
         return response.json();
       })
       .then((data) => {
-        const matchingDrink = data.find((drink) => drink.id === parseInt(drinkId));
+        const matchingDrink = data.find((drink) => drink.id === parseInt(drinkId));      
         let drinkTypeId;
 
         if (matchingDrink) {
@@ -79,7 +79,8 @@ function AddDrinkForm({ editMode }) {
           const matchingDrinkType = allDrinkTypes.find((drinkType) => {
             return drinkType.name === matchingDrink.drink_type
           });
-          drinkTypeId = matchingDrinkType.id;
+          // Set drinkType to 0 if not exists so that it defaults to "Select a drink type"
+          drinkTypeId = matchingDrinkType?.id || 0;
         };
 
         matchingDrink 
@@ -118,7 +119,6 @@ function AddDrinkForm({ editMode }) {
       };
     }
   }, [drinkId, isEdit]);
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page refresh
@@ -126,8 +126,6 @@ function AddDrinkForm({ editMode }) {
     setError(null);
     
     try {
-      // As user types input, it gets saved in `newDrink` state
-      // On fetch, backend will handle the submitted data and POST req
       console.log("Fetching data from /api/all-items...");
       const response = await fetch("/api/all-items", {
         method: isEdit ? "PUT" : "POST",
@@ -139,7 +137,6 @@ function AddDrinkForm({ editMode }) {
           : JSON.stringify({ drink: newDrink })
       });
 
-      // Check the response from backend and proceed accordingly
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
@@ -225,7 +222,7 @@ function AddDrinkForm({ editMode }) {
                   type="text"
                   name="drinkType"
                   id="drink-type"
-                  value={newDrink.drinkType}
+                  value={newDrink.drinkType ? newDrink.drinkType  : 0}
                   onChange={(e) => {
                     setNewDrink({
                       ...newDrink,
@@ -234,6 +231,7 @@ function AddDrinkForm({ editMode }) {
                   }
                   required
                 >
+                  <option value={0}>Select an option</option>
                   {allDrinkTypes.map((drinkType) => {
                     return (
                       <option key={drinkType.id} value={drinkType.id}>
