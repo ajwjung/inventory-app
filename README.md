@@ -15,7 +15,7 @@ To practice creating a CRUD inventory app that has both categories and items. Th
 
 ## Features
 
-This app allows users to create, read, update, and delete drinks (items) and drink types (categories). There are existing data already inserted as samples that cannot be deleted for the sake of having a starting point. For all drinks, the milk substitute cannot be edited because of how data is stored.
+This app allows users to create, read, update, and delete drinks (items) and drink types (categories). Sample data has already been inserted and cannot be deleted by the user so that there are examples to preview at any given time. For all default drinks, the milk substitute property cannot be edited because most drinks have multiple records for the same drink with a different milk option.
 
 ## Known Issues
 
